@@ -1,33 +1,35 @@
 import unittest
-import itertools
+import NodeSolution
+
 class unitest(unittest.TestCase):
     def testOverflow(self):
-        l1 = [2,4,3]
-        l2 = [5,6,4]
-        ans = [7,0,8]
+        row = [2,4,3]
+        l1 = NodeSolution.NodeSolution().AddNode(row)
+        row = [5,6,4]
+        l2 = NodeSolution.NodeSolution().AddNode(row)
+        ans = [7,0,8] 
         self.assertEqual(Solution().addTwoNumbers(l1,l2),ans)
     def testDiffDigits(self):
-        l1 = [2,4,3,5]
-        l2 = [5,6,4]
+        row = [2,4,3,5]
+        l1 = NodeSolution.NodeSolution().AddNode(row)
+        row = [5,6,4]
+        l2 = NodeSolution.NodeSolution().AddNode(row)
         ans = [7,0,8,5]
         self.assertEqual(Solution().addTwoNumbers(l1,l2),ans)
 
 class Solution():
     def addTwoNumbers(self, l1, l2):
-        def fn(a,b):
-            if a is None and b is None:
-                return 0
-            if a is None:
-                return b
-            if b is None:
-                return a
-            return a + b
         ans = []
         overflow = 0
-        for a,b in itertools.zip_longest(l1,l2):
-            c = fn(a,b)
-            ans.append(int(c)%10+overflow)
-            overflow = int((c)/10)
+        while l1 or l2 or overflow:
+            if l1:
+                overflow += l1.val 
+                l1 = l1.next
+            if l2:
+                overflow += l2.val
+                l2 = l2.next
+            overflow, val = divmod(overflow,10)
+            ans.append(val)
         return ans
 
 if __name__ == '__main__':
